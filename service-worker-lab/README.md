@@ -1,27 +1,37 @@
-## Service worker
+# Notes
+- Service workers must be registered.
+- Always start by checking if the browser supports service workers. The service
+worker is exposed on the browser's [Navigator](https://developer.mozilla.org/en-US/docs/Web/API/Navigator) i.e. `window.navigator.serviceWorker`
 
-In this lab you learn how to create a basic service worker script, install it, and do simple debugging.
+## SW Life Cycle
+- The service worker emits an `install` event at the end of registration (this is a good place for caching static assets). SW emits an  `activate` event when it takes control of the page (is often used to update caches).
+```javascript
+  self.addEventListener('install', function(event) {
+    console.log('Service worker installing...');
+    });
 
-## Getting started
-Clone the repository and navigate to **service-worker-lab/app**.
+  self.addEventListener('activate', function(event) {
+    console.log('Service worker activating...');
+  });
+```
+- fetch events are received for every HTTP request (we could also create and return our own custom response with arbitrary resources).
+```javascript
+self.addEventListener('fetch', function(event) {
+    console.log('Fetching:', event.request.url);
+});
+```
 
-Start a local web server at the app base directory. Then, open your browser and
-navigate to the appropriate local host port (for example, http://localhost:8080/). **Use incognito browsing in this lab unless stated otherwise. It ensures that your program is starting from a known state.**
+## SW Scope
+- The promise returned by `register()` resolves to the registration object, which contains the service worker's scope.
 
-## License
+**The default scope is the path to the service worker file, and extends to all lower directories. So a service worker in the root directory of an app controls requests from all files in the app.**
 
-Copyright 2016 Google Inc.
+- Notice if `service-worker.js` is in a subdirectory (/below) then the service worker only controls requests for the requests in that subdirectory. The service worker's default scope is the path to the service worker file. Since the service worker file is now in app/below/, that is its scope. The console is now only logging fetch events for another.html, another.css, and another.js, because these are the only resources within the service worker's scope (app/below/).
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
-This is not an official Google product.
+- Can set an arbitrary scope using the options in serviceWorker.register().
+```javascript
+navigator.serviceWorker.register('service-worker.js',
+{scope: './below'})
+.then(function(registration) {
+    console.log('Registered at scope:', registration.scope);
+})```
