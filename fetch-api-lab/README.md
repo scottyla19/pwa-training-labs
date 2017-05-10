@@ -1,28 +1,4 @@
-## Fetch API
-
-In this project you will learn how to use the Fetch API.
-
-## Getting started
-
-Clone the repository and navigate to **fetch-api-lab/app**.
-
-Start a local web server at the app base directory. Then, open your browser and
-navigate to the appropriate local host port (for example, http://localhost:8080/).
-
-## License
-
-Copyright 2016 Google Inc.
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
-This is not an official Google product.
+# Notes
+- Why didn't a failed response activate the catch block? This is an important note for fetch and promises—**bad responses (like 404s) still resolve!** A fetch promise only rejects if the request was unable to complete, so you must always check the validity of the response.
+- Getting headers involves getting a headers object `var myHeaders = response.headers` then calling the get funciotn on
+the object. `myHeaders.get(name)`
