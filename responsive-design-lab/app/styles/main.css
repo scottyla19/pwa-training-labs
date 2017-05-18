@@ -2,8 +2,25 @@
 
 /* TODO 3 - style the page */
 
-/* TODO 4 - use media query */
+@media screen and (max-width: 48rem) {
+  .container .col {
+    width: 95%;
+  }
+}
 
-/* TODO 5.2 - use flexbox */
+.container {
+  display: flex;         /* NEW, Spec - Firefox, Chrome, Opera */
+  background: #eee;
+  overflow: auto;
+}
 
-/* TODO 5.4 - use media query with Flexbox*/
+.container .col {
+  flex: 1;
+  padding: 1rem;
+}
+@media screen and (max-width: 48rem) {
+  .container {
+    display: flex;
+    flex-flow: column;
+  }
+}
